@@ -36,23 +36,24 @@ export const Navbar = ({ hide }: NavbarProps) => {
     <nav
       className={cn(
         styles.paddingX,
-        "w-full flex items-center py-5 fixed top-0 z-20 bg-primary",
-        isAtBottom || hide ? "mt-0" : "mt-20"
+        "w-full flex items-center py-4 sm:py-5 fixed top-0 z-20 bg-primary transition-all duration-300",
+        isAtBottom || hide ? "mt-0 shadow-lg" : "mt-16 sm:mt-20"
       )}
     >
-      <div className="w-full flex justify-between items-center max-w-7xl mx-auto">
+      <div className="w-full flex justify-between items-center max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         {/* Logo */}
         <Link
           to="/"
           className="flex items-center gap-2"
           onClick={() => {
             setActive("");
+            setToggle(false);
             window.scrollTo(0, 0);
           }}
         >
-          <img src={logo} alt="Logo" className="w-9 h-9 object-contain" />
-          <p className="text-white text-[18px] font-bold cursor-pointer flex">
-            Priyanshu &nbsp;<span className="sm:block hidden">| Developer</span>
+          <img src={logo} alt="Logo" className="w-8 h-8 sm:w-9 sm:h-9 object-contain" />
+          <p className="text-white text-base sm:text-lg font-bold cursor-pointer flex">
+            Priyanshu <span className="hidden sm:inline">&nbsp;| Developer</span>
           </p>
         </Link>
 
@@ -80,31 +81,38 @@ export const Navbar = ({ hide }: NavbarProps) => {
 
         {/* Hamburger Menu (Mobile) */}
         <div className="sm:hidden flex flex-1 justify-end items-center">
-          <img
-            src={toggle ? close : menu}
-            alt="Menu"
-            className="w-[28px] h-[28px] object-contain cursor-pointer"
+          <button
+            type="button"
+            className="p-2 -mr-2"
             onClick={() => setToggle(!toggle)}
-          />
+            aria-label="Toggle menu"
+          >
+            <img
+              src={toggle ? close : menu}
+              alt="Menu"
+              className="w-6 h-6 object-contain"
+            />
+          </button>
 
+          {/* Mobile Menu */}
           <div
             className={cn(
               !toggle ? "hidden" : "flex",
-              "p-6 black-gradient absolute top-20 right-0 mx-4 my-2 min-w-[140px] z-10 rounded-xl"
+              "fixed inset-0 bg-primary/95 backdrop-blur-sm z-10 pt-24 px-6"
             )}
+            onClick={() => setToggle(false)}
           >
-            {/* Nav Links (Mobile) */}
-            <ul className="list-none flex justify-end items-start flex-col gap-4">
+            <ul className="w-full flex flex-col items-center gap-6">
               {NAV_LINKS.map((link) => (
                 <li
                   key={link.id}
                   className={cn(
-                    active === link.title ? "text-white" : "text-secondary",
-                    "font-poppins font-medium cursor-pointer text-[16px]"
+                    active === link.title ? "text-white" : "text-secondary hover:text-white",
+                    "text-xl font-medium cursor-pointer transition-colors duration-200 w-full text-center py-2"
                   )}
                   onClick={() => {
-                    !link.link && setToggle(!toggle);
-                    !link.link && setActive(link.title);
+                    setToggle(false);
+                    setActive(link.title);
                   }}
                 >
                   {link.link ? (
